@@ -172,19 +172,19 @@ const [alertSeverityFilter, setAlertSeverityFilter] =
       ] = await Promise.all([
 
         fetch(
-          "http://localhost:8080/api/servers"
+          "https://cloud-infrastructure-monitoring.onrender.com/api/servers"
         ),
 
         fetch(
-          "http://localhost:8080/api/metrics"
+          "https://cloud-infrastructure-monitoring.onrender.com/api/metrics"
         ),
 
         fetch(
-          "http://localhost:8080/api/alerts"
+          "https://cloud-infrastructure-monitoring.onrender.com/api/alerts"
         ),
 
         fetch(
-          "http://localhost:8080/api/agents"
+          "https://cloud-infrastructure-monitoring.onrender.com/api/agents"
         )
 
 ]);
@@ -371,7 +371,7 @@ const [alertSeverityFilter, setAlertSeverityFilter] =
 
       const response =
         await fetch(
-          "http://localhost:8080/api/servers",
+          "https://cloud-infrastructure-monitoring.onrender.com/api/servers",
           {
             method: "POST",
 
@@ -459,7 +459,7 @@ const [alertSeverityFilter, setAlertSeverityFilter] =
 
       const response =
         await fetch(
-          `http://localhost:8080/api/servers/${serverId}`,
+          `https://cloud-infrastructure-monitoring.onrender.com/api/servers/${serverId}`,
           {
             method: "DELETE"
           }
@@ -519,7 +519,7 @@ const updateAgentStatus = async (
 
     const response =
       await fetch(
-        `http://localhost:8080/api/agents/${agentId}/status`,
+        `https://cloud-infrastructure-monitoring.onrender.com/api/agents/${agentId}/status`,
         {
           method: "PUT",
 
@@ -874,8 +874,7 @@ const getAgentName = (agentId) => {
   // HISTORY DATA
   // =========================
 
-  const historyData =
-    useMemo(() => {
+  const historyData = useMemo(() => {
 
       if (!selectedServerId) {
 
@@ -907,7 +906,7 @@ const getAgentName = (agentId) => {
 
             const metricTime =
               new Date(
-                metric.timestamp
+                metric.timestamp + "Z"
               );
 
 
@@ -932,13 +931,9 @@ const getAgentName = (agentId) => {
         .sort(
           (a, b) =>
 
-            new Date(
-              a.timestamp
-            ) -
+            new Date(a.timestamp + "Z") -
 
-            new Date(
-              b.timestamp
-            )
+            new Date(b.timestamp + "Z")
         )
 
         .map(
@@ -946,7 +941,7 @@ const getAgentName = (agentId) => {
 
             time:
               new Date(
-                metric.timestamp
+                metric.timestamp + "Z"
               ).toLocaleTimeString(),
 
             cpu:
