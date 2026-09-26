@@ -25,8 +25,14 @@ function getLastSeenText(
     return "Never";
   }
 
+  // Backend LocalDateTime is stored without timezone.
+  // Treat it as UTC before comparing with browser time.
   const lastSeenTime =
-    new Date(lastSeen).getTime();
+    new Date(
+      lastSeen.endsWith("Z")
+        ? lastSeen
+        : lastSeen + "Z"
+    ).getTime();
 
   const now =
     currentTime || Date.now();
